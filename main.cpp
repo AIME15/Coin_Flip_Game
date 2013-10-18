@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -13,15 +14,15 @@ double divide(int a, int b)
 	return a / (b + 0.0);
 }
 
-void compute()
+void compute(int depth)
 {
-	for (int h = 0; h < MAX_DEPTH + 1; h++)
+	for (int h = 0; h < depth + 1; h++)
 	{
-		value[h][MAX_DEPTH] = divide(h, MAX_DEPTH);
-		run_away[h][MAX_DEPTH] = true;
+		value[h][depth] = max(divide(h, depth), 0.5);
+		run_away[h][depth] = true;
 	}
 
-	for (int total = MAX_DEPTH - 1; total >= 1; total--)
+	for (int total = depth - 1; total >= 1; total--)
 	{
 		for (int h = 0; h <= total; h++)
 		{
@@ -66,10 +67,21 @@ void find_threshold_h()
 	}
 }
 
+void print_value()
+{
+	cout << value[0][0] << endl;
+}
+
 int main()
 {
-	compute();
-	print_run_away();
-	find_threshold_h();
+	for (int i = 10; i <= 10000; i += 500)
+	{
+		compute(i);
+		print_value();
+	}
+	// compute();
+	// print_run_away();
+	// find_threshold_h();
+	print_value();
 	return 0;
 }
