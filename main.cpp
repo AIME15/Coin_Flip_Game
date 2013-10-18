@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int MAX_DEPTH = 1000; // at MAX_DEPTH flips you are forced to quit
+const int MAX_DEPTH = 10000; // at MAX_DEPTH flips you are forced to quit
 const double P = 0.5; // probability of heads
 
 double value[MAX_DEPTH + 1][MAX_DEPTH + 1]; // value[a][b]: a heads, b total
@@ -13,7 +13,7 @@ double divide(int a, int b)
 	return a / (b + 0.0);
 }
 
-int main()
+void compute()
 {
 	for (int h = 0; h < MAX_DEPTH + 1; h++)
 	{
@@ -37,7 +37,39 @@ int main()
 
 	run_away[0][0] = false;
 	value[0][0] = (1 - P) * value[0][1] + P * value[1][1];
+}
 
-	cout << value[0][0] << endl;
+void print_run_away()
+{
+	for (int total = 0; total <= 20; total++)
+	{
+		for (int h = 0; h <= total; h++)
+		{
+			cout << run_away[h][total] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void find_threshold_h()
+{
+	for (int total = 0; total <= 20; total++)
+	{
+		for (int h = 0; h <= total; h++)
+		{
+			if (run_away[h][total])
+			{
+				cout << divide(h, total) << endl;
+				break;
+			}
+		}
+	}
+}
+
+int main()
+{
+	compute();
+	print_run_away();
+	find_threshold_h();
 	return 0;
 }
